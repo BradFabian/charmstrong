@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import HeroBand from '../../components/sections/HeroBand.astro';
+import BeerCard from '../../components/ui/BeerCard.astro';
+import PlaceholderNote from '../../components/ui/PlaceholderNote.astro';
+import Section from '../../components/ui/Section.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const beers = (await getCollection('beers')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Our Beers" description="Explore the Charmstrong lineup of classic lagers, IPA, and specialty releases.">
+  <HeroBand heading="Our Beers" intro="Classic styles. Crafted for New England." />
+  <Section>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      {
+        beers.map((beer) => (
+          <li>
+            <BeerCard beer={beer} />
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-10">
+      <PlaceholderNote>Beer names, descriptions, ABV and IBU come from the concept design and are not confirmed.</PlaceholderNote>
+    </div>
+  </Section>
+</BaseLayout>

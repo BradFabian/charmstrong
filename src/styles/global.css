@@ -1,0 +1,74 @@
+@import "tailwindcss" source("../");
+
+/* static: emit every token so SVGs and scoped styles can read them as CSS variables. */
+@theme static {
+  /* Remove Tailwind's default palette so only brand colors can be used. */
+  --color-*: initial;
+
+  --color-celtic: #087443;
+  --color-pub: #103e2b;
+  --color-ink: #0a1f16;
+  --color-cream: #f5f0df;
+  --color-parchment: #ebe4cc;
+  --color-brass: #d7b56d;
+  --color-malt: #713d28;
+  --color-tin: #cfd0c6;
+
+  --font-display: var(--font-zilla-slab);
+  --font-body: var(--font-barlow);
+
+  --container-page: 76rem;
+}
+
+@layer base {
+  :root {
+    --focus-color: var(--color-pub);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-pub);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 3px;
+  }
+
+  /* Dark surfaces need a lighter focus ring. */
+  .tone-dark {
+    --focus-color: var(--color-brass);
+  }
+
+  dialog::backdrop {
+    background-color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

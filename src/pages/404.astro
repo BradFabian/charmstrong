@@ -1,0 +1,14 @@
+---
+import HeroBand from '../components/sections/HeroBand.astro';
+import Button from '../components/ui/Button.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page Not Found" description="We couldn't find that page." noindex>
+  <HeroBand heading="Page Not Found" intro="We couldn't find that page. It may have moved, or the link may be wrong.">
+    <Fragment slot="actions">
+      <Button href="/">Back to Home</Button>
+      <Button href="/beers/" variant="secondary">See Our Beers</Button>
+    </Fragment>
+  </HeroBand>
+</BaseLayout>

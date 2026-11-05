@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import HeroBand from '../components/sections/HeroBand.astro';
+import BeerCard from '../components/ui/BeerCard.astro';
+import Button from '../components/ui/Button.astro';
+import PlaceholderNote from '../components/ui/PlaceholderNote.astro';
+import Section from '../components/ui/Section.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const beers = (await getCollection('beers')).sort((a, b) => a.data.order - b.data.order);
+
+const colors = [
+  { name: 'Celtic Green', value: '#087443', swatch: 'bg-celtic' },
+  { name: 'Deep Pub Green', value: '#103E2B', swatch: 'bg-pub' },
+  { name: 'Ink', value: '#0A1F16', swatch: 'bg-ink' },
+  { name: 'Vintage Cream', value: '#F5F0DF', swatch: 'bg-cream border border-pub/30' },
+  { name: 'Parchment', value: '#EBE4CC', swatch: 'bg-parchment' },
+  { name: 'Brass Gold', value: '#D7B56D', swatch: 'bg-brass' },
+  { name: 'Malt Brown', value: '#713D28', swatch: 'bg-malt' },
+];
+---
+
+<BaseLayout title="Style Guide" description="Charmstrong theme reference." noindex>
+  <HeroBand eyebrow="Internal reference" heading="Style Guide" subheading="Theme and Shell" intro="Every shared token and component in one place." />
+
+  <Section labelledby="colors-heading">
+    <h2 id="colors-heading" class="text-3xl uppercase">Colors</h2>
+    <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
+      {
+        colors.map(({ name, value, swatch }) => (
+          <li>
+            <div class:list={['h-20', swatch]} />
+            <p class="mt-2 text-sm font-semibold">{name}</p>
+            <p class="text-sm">{value}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="parchment" labelledby="type-heading">
+    <h2 id="type-heading" class="text-3xl uppercase">Typography</h2>
+    <p class="mt-6 font-display text-5xl uppercase">Zilla Slab headline</p>
+    <p class="mt-4 max-w-prose text-lg">Barlow body text. Clean and readable for navigation, product information, and longer passages of copy.</p>
+    <p class="mt-2 font-semibold tracking-wider uppercase">Barlow semibold label</p>
+  </Section>
+
+  <Section labelledby="buttons-cream-heading">
+    <h2 id="buttons-cream-heading" class="text-3xl uppercase">Buttons on Cream</h2>
+    <div class="mt-6 flex flex-wrap gap-4">
+      <Button href="/styleguide/">Primary</Button>
+      <Button href="/styleguide/" variant="outline">Outline</Button>
+    </div>
+  </Section>
+
+  <Section tone="pub" labelledby="buttons-dark-heading">
+    <h2 id="buttons-dark-heading" class="text-3xl uppercase">Buttons on Dark</h2>
+    <div class="mt-6 flex flex-wrap gap-4">
+      <Button href="/styleguide/">Primary</Button>
+      <Button href="/styleguide/" variant="secondary">Secondary</Button>
+    </div>
+  </Section>
+
+  <Section labelledby="cards-heading">
+    <h2 id="cards-heading" class="text-3xl uppercase">Beer Cards</h2>
+    <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      {
+        beers.map((beer) => (
+          <li>
+            <BeerCard beer={beer} headingLevel={3} />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="parchment" labelledby="notes-heading">
+    <h2 id="notes-heading" class="mb-6 text-3xl uppercase">Placeholder Note</h2>
+    <div class="bg-cream p-4">
+      <PlaceholderNote>Marks any content that isn't approved yet.</PlaceholderNote>
+    </div>
+  </Section>
+</BaseLayout>

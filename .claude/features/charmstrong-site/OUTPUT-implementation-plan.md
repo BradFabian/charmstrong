@@ -1,6 +1,14 @@
 # Implementation Plan: Theme and Shell
 
-**Status:** Draft, awaiting approval. Assumes the recommended answers in `feature.md`.
+**Status:** Approved 2026-11-05 with the recommended answers in `feature.md`. Steps 1-10 are built on `feature/charmstrong-site`. See the QA file for results.
+
+**Changes from this plan during the build:**
+
+- Fonts use Astro's built-in font system, so no extra packages were needed.
+- Zilla Slab and Barlow were picked directly rather than compared in the style guide. Swapping them is a small config change.
+- Added `ink`, `parchment` and `tin` color tokens. `ink` is an estimate from the mockup, not a pixel sample.
+- Added `src/components/ui/PlaceholderNote.astro` to mark unapproved content consistently.
+- The age gate and mobile nav scripts end up inline in the HTML, so the build has no separate JS files.
 
 ## Decisions
 

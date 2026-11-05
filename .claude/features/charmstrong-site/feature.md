@@ -69,7 +69,7 @@ Filled in manually because the `/scope-feature` skill isn't installed. Recommend
 
 ## Extended Brief
 
-Draft, assuming the recommended answers above.
+Confirmed 2026-11-05: the orchestrator accepted the recommended answers above. Q8 (logo file and wording) is still open.
 
 ### Project goal
 

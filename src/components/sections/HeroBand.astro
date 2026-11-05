@@ -1,0 +1,39 @@
+---
+interface Props {
+  heading: string;
+  /** Optional second line, shown in brass. */
+  subheading?: string;
+  eyebrow?: string;
+  intro?: string;
+}
+
+const { heading, subheading, eyebrow, intro } = Astro.props;
+const hasMedia = Astro.slots.has('media');
+---
+
+<section aria-labelledby="page-heading" class="tone-dark border-b-4 border-brass bg-pub text-cream">
+  <div
+    class:list={[
+      'mx-auto grid max-w-page items-center gap-10 px-4 py-14 sm:px-6 md:py-20',
+      hasMedia && 'md:grid-cols-[3fr_2fr]',
+    ]}
+  >
+    <div>
+      {eyebrow && <p class="mb-3 text-sm font-semibold tracking-widest text-brass uppercase">{eyebrow}</p>}
+      <h1 id="page-heading" class="text-4xl uppercase sm:text-5xl lg:text-6xl">
+        {heading}
+        {subheading && <span class="mt-2 block text-brass">{subheading}</span>}
+      </h1>
+      <div class="my-6 h-1 w-24 bg-brass"></div>
+      {intro && <p class="max-w-prose text-lg">{intro}</p>}
+      {
+        Astro.slots.has('actions') && (
+          <div class="mt-8 flex flex-wrap gap-4">
+            <slot name="actions" />
+          </div>
+        )
+      }
+    </div>
+    {hasMedia && <slot name="media" />}
+  </div>
+</section>

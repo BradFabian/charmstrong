@@ -1,0 +1,112 @@
+---
+import { findBeerLink, primaryNav, site } from '../data/site';
+
+const path = Astro.url.pathname;
+
+function isCurrent(href: string) {
+  return href === '/' ? path === '/' : path.startsWith(href);
+}
+
+/** Exact match is the page itself; a deeper URL (a beer page) is within that section. */
+function ariaCurrent(href: string) {
+  if (!isCurrent(href)) return undefined;
+  return path === href ? 'page' : 'true';
+}
+---
+
+<header class="tone-dark border-b border-brass/40 bg-ink text-cream">
+  <div class="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
+    <!-- Replace this wordmark with the lion logo once the source file is supplied. -->
+    <a href="/" class="font-display text-2xl tracking-wide uppercase" aria-label={`${site.name} home`}>
+      {site.name}
+    </a>
+
+    <nav aria-label="Primary" class="contents">
+      <button
+        type="button"
+        class="nav-toggle cursor-pointer items-center gap-2 border border-cream/60 px-3 py-2 text-sm font-semibold uppercase"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        data-nav-toggle
+      >
+        Menu
+      </button>
+
+      <ul
+        id="primary-nav"
+        data-nav-panel
+        class="nav-panel w-full border-t border-cream/20 pt-2 md:flex md:w-auto md:items-center md:gap-7 md:border-0 md:pt-0"
+      >
+        {
+          primaryNav.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={ariaCurrent(link.href)}
+                class:list={[
+                  'block py-2 text-sm font-semibold tracking-wider uppercase underline-offset-8 hover:text-brass md:py-1',
+                  isCurrent(link.href) && 'text-brass underline decoration-2',
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="mt-2 mb-2 md:my-0">
+          <a
+            href={findBeerLink.href}
+            aria-current={ariaCurrent(findBeerLink.href)}
+            class:list={[
+              'inline-block border-2 border-brass px-4 py-2 text-sm font-semibold tracking-wider uppercase transition-colors hover:bg-brass hover:text-pub',
+              isCurrent(findBeerLink.href) && 'bg-brass text-pub',
+            ]}
+          >
+            {findBeerLink.label}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav-toggle {
+    display: none;
+  }
+
+  /* Without JavaScript the links stay visible, so the menu is never unreachable. */
+  @media (max-width: 47.99rem) {
+    :global(.js) .nav-toggle {
+      display: inline-flex;
+    }
+
+    :global(.js) .nav-panel:not([data-open]) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-nav-panel]');
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? 'Close' : 'Menu';
+      panel.toggleAttribute('data-open', open);
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

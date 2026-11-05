@@ -1,0 +1,35 @@
+---
+import { footerNav, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="tone-dark border-t-4 border-brass bg-ink text-cream">
+  <div class="mx-auto grid max-w-page gap-8 px-4 py-10 sm:px-6 md:grid-cols-2">
+    <div>
+      <p class="font-display text-2xl tracking-wide uppercase">{site.name}</p>
+      <p class="mt-1 text-sm tracking-wider uppercase">{site.location}</p>
+      <p class="mt-4 max-w-prose">Please enjoy responsibly. Must be 21 or older.</p>
+    </div>
+
+    <nav aria-label="Footer" class="md:justify-self-end">
+      <ul class="grid gap-2">
+        {
+          footerNav.map((link) => (
+            <li>
+              <a href={link.href} class="font-semibold underline-offset-4 hover:text-brass hover:underline">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-t border-cream/20">
+    <div class="mx-auto max-w-page px-4 py-4 text-sm sm:px-6">
+      <p>&copy; {year} {site.name}. Proof of concept: product details and visuals are placeholders.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  tone?: 'cream' | 'parchment' | 'pub';
+  /** The id of this section's heading, so assistive technology can name it. */
+  labelledby?: string;
+}
+
+const { tone = 'cream', labelledby } = Astro.props;
+
+const tones = {
+  cream: 'bg-cream text-pub',
+  parchment: 'bg-parchment text-pub',
+  pub: 'tone-dark bg-pub text-cream',
+};
+---
+
+<section aria-labelledby={labelledby} class:list={['py-12 md:py-20', tones[tone]]}>
+  <div class="mx-auto max-w-page px-4 sm:px-6">
+    <slot />
+  </div>
+</section>

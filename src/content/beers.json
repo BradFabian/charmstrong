@@ -1,0 +1,72 @@
+[
+  {
+    "id": "american-crisp-lager",
+    "name": "American Crisp Lager",
+    "order": 1,
+    "canLabel": ["American", "Crisp Lager"],
+    "canColor": "cream",
+    "style": "American lager",
+    "description": "Clean, crisp, and refreshing. A modern lager built for every occasion.",
+    "abv": 4.8,
+    "ibu": 18,
+    "tastingNotes": [],
+    "ingredients": [],
+    "availability": "Core lineup"
+  },
+  {
+    "id": "irish-style-lager",
+    "name": "Irish Style Lager",
+    "order": 2,
+    "canLabel": ["Irish Style", "Lager"],
+    "canColor": "pub",
+    "style": "Irish-style lager",
+    "description": "A smooth, malty lager with classic Irish character and a clean finish.",
+    "abv": 5.0,
+    "ibu": 20,
+    "tastingNotes": [],
+    "ingredients": [],
+    "availability": "Core lineup"
+  },
+  {
+    "id": "dark-lager",
+    "name": "Dark Lager",
+    "order": 3,
+    "canLabel": ["Dark", "Lager"],
+    "canColor": "malt",
+    "style": "Dark lager",
+    "description": "A rich, toasty lager with notes of roasted malt, caramel, and chocolate.",
+    "abv": 5.4,
+    "ibu": 24,
+    "tastingNotes": [],
+    "ingredients": [],
+    "availability": "Core lineup"
+  },
+  {
+    "id": "ipa",
+    "name": "IPA",
+    "order": 4,
+    "canLabel": ["IPA"],
+    "canColor": "celtic",
+    "style": "India pale ale",
+    "description": "A Northeast-inspired IPA with a bold hop profile, bright citrus and pine, and a balanced bite.",
+    "abv": 6.8,
+    "ibu": 60,
+    "tastingNotes": [],
+    "ingredients": [],
+    "availability": "Core lineup"
+  },
+  {
+    "id": "specialty-series",
+    "name": "Specialty Series",
+    "order": 5,
+    "canLabel": ["Specialty", "Series"],
+    "canColor": "cream",
+    "style": "Rotating small-batch releases",
+    "description": "Rotating small-batch beers that explore European styles, seasonal ingredients, and local influences.",
+    "abv": null,
+    "ibu": null,
+    "tastingNotes": [],
+    "ingredients": [],
+    "availability": "Seasonal and limited releases"
+  }
+]

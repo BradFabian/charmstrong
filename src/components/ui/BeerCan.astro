@@ -1,0 +1,42 @@
+---
+/* Drawn stand-in until real can art exists. */
+interface Props {
+  label: string[];
+  color: 'cream' | 'pub' | 'malt' | 'celtic';
+  class?: string;
+}
+
+const { label, color, class: className } = Astro.props;
+
+const palettes = {
+  cream: { body: 'fill-cream stroke-pub', text: 'fill-pub' },
+  // Brass outline keeps this can visible on the matching dark hero background.
+  pub: { body: 'fill-pub stroke-brass', text: 'fill-cream' },
+  malt: { body: 'fill-malt stroke-malt', text: 'fill-cream' },
+  celtic: { body: 'fill-celtic stroke-celtic', text: 'fill-cream' },
+};
+
+const palette = palettes[color];
+---
+
+<!-- Decorative: the beer's name always appears as real text next to the can. -->
+<svg viewBox="0 0 120 220" aria-hidden="true" class:list={['block', className]}>
+  <rect x="24" y="2" width="72" height="12" rx="3" class="fill-tin" />
+  <rect x="14" y="14" width="92" height="202" rx="14" class={palette.body} stroke-width="1.5" />
+  <rect x="22" y="26" width="76" height="3" class="fill-brass" />
+  <circle cx="60" cy="74" r="26" class="fill-brass" />
+  <text x="60" y="87" text-anchor="middle" class="fill-pub font-display text-4xl">C</text>
+  {
+    label.map((line, index) => (
+      <text
+        x="60"
+        y={132 + index * 18}
+        text-anchor="middle"
+        class:list={[palette.text, 'font-body text-[0.8rem] font-semibold uppercase']}
+      >
+        {line}
+      </text>
+    ))
+  }
+  <rect x="22" y="200" width="76" height="3" class="fill-brass" />
+</svg>

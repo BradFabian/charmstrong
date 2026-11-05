@@ -1,0 +1,57 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import HeroBand from '../../components/sections/HeroBand.astro';
+import BeerCan from '../../components/ui/BeerCan.astro';
+import Button from '../../components/ui/Button.astro';
+import PlaceholderNote from '../../components/ui/PlaceholderNote.astro';
+import Section from '../../components/ui/Section.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { findBeerLink } from '../../data/site';
+
+export async function getStaticPaths() {
+  const beers = await getCollection('beers');
+  return beers.map((beer) => ({ params: { slug: beer.id }, props: { beer } }));
+}
+
+interface Props {
+  beer: CollectionEntry<'beers'>;
+}
+
+const { beer } = Astro.props;
+const { name, canLabel, canColor, style, description, abv, ibu, tastingNotes, ingredients, availability } = beer.data;
+
+const details = [
+  { term: 'Style', value: style },
+  { term: 'ABV', value: abv === null ? 'Varies by release' : `${abv.toFixed(1)}%` },
+  { term: 'IBU', value: ibu === null ? 'Varies by release' : String(ibu) },
+  { term: 'Tasting notes', value: tastingNotes.join(', ') || 'To be confirmed' },
+  { term: 'Ingredients', value: ingredients.join(', ') || 'To be confirmed' },
+  { term: 'Availability', value: availability },
+];
+---
+
+<BaseLayout title={name} description={description}>
+  <HeroBand eyebrow="Our Beers" heading={name} intro={description}>
+    <Fragment slot="actions">
+      <Button href={findBeerLink.href}>{findBeerLink.label}</Button>
+      <Button href="/beers/" variant="secondary">All Beers</Button>
+    </Fragment>
+    <BeerCan slot="media" label={canLabel} color={canColor} class="mx-auto w-40" />
+  </HeroBand>
+  <Section labelledby="details-heading">
+    <h2 id="details-heading" class="text-3xl uppercase">Beer Details</h2>
+    <dl class="mt-6 grid max-w-3xl gap-x-8 sm:grid-cols-[auto_1fr]">
+      {
+        details.map(({ term, value }) => (
+          <>
+            <dt class="pt-3 font-semibold sm:border-t sm:border-pub/20 sm:pb-3">{term}</dt>
+            <dd class="pb-3 sm:border-t sm:border-pub/20 sm:pt-3">{value}</dd>
+          </>
+        ))
+      }
+    </dl>
+    <div class="mt-8">
+      <PlaceholderNote>These details come from the concept design and are not confirmed.</PlaceholderNote>
+    </div>
+  </Section>
+</BaseLayout>

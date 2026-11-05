@@ -1,0 +1,116 @@
+---
+import { site } from '../data/site';
+---
+
+<noscript>
+  <p class="bg-ink px-4 py-2 text-center text-cream">
+    This site is intended for people aged 21 and over.
+  </p>
+</noscript>
+
+<dialog
+  id="age-gate"
+  closedby="none"
+  aria-labelledby="age-gate-heading"
+  class="tone-dark m-auto w-[calc(100%-2rem)] max-w-md border-2 border-brass bg-pub p-8 text-center text-cream"
+>
+  <p class="font-display text-2xl tracking-wide uppercase">{site.name}</p>
+  <div class="mx-auto my-5 h-0.5 w-16 bg-brass"></div>
+
+  <div data-age-ask>
+    <h2 id="age-gate-heading" class="text-3xl uppercase">Are you 21 or older?</h2>
+    <p class="mt-3">You must be of legal drinking age to enter this site.</p>
+    <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+      <button
+        type="button"
+        data-age-yes
+        class="cursor-pointer border-2 border-brass bg-brass px-8 py-3 font-semibold text-pub uppercase transition-colors hover:bg-cream"
+      >
+        Yes, I'm 21+
+      </button>
+      <button
+        type="button"
+        data-age-no
+        class="cursor-pointer border-2 border-cream px-8 py-3 font-semibold uppercase transition-colors hover:bg-ink"
+      >
+        No
+      </button>
+    </div>
+  </div>
+
+  <div data-age-denied hidden>
+    <h2 id="age-gate-denied-heading" data-age-denied-heading tabindex="-1" class="text-3xl uppercase focus:outline-none">
+      Sorry, not yet
+    </h2>
+    <p class="mt-3">You need to be 21 or older to visit this site. We'll be here when you are.</p>
+    <button
+      type="button"
+      data-age-back
+      class="mt-6 cursor-pointer font-semibold underline underline-offset-4 hover:text-brass"
+    >
+      Go back
+    </button>
+  </div>
+</dialog>
+
+<!--
+  Inline and directly after the dialog on purpose: it runs before the browser
+  paints the page, so site content never flashes behind the gate.
+-->
+<script is:inline>
+  (function () {
+    var KEY = 'charmstrong-age-confirmed';
+    var THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+    var dialog = document.getElementById('age-gate');
+
+    function isConfirmed() {
+      try {
+        var confirmedAt = Number(localStorage.getItem(KEY));
+        return confirmedAt > 0 && Date.now() - confirmedAt < THIRTY_DAYS;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    if (isConfirmed()) return;
+
+    var ask = dialog.querySelector('[data-age-ask]');
+    var denied = dialog.querySelector('[data-age-denied]');
+    var accepted = false;
+
+    dialog.addEventListener('cancel', function (event) {
+      event.preventDefault();
+    });
+
+    // Some browsers close a dialog on a second Escape even when cancel is prevented.
+    dialog.addEventListener('close', function () {
+      if (!accepted) dialog.showModal();
+    });
+
+    dialog.querySelector('[data-age-yes]').addEventListener('click', function () {
+      accepted = true;
+      try {
+        localStorage.setItem(KEY, String(Date.now()));
+      } catch (error) {
+        // Storage is blocked: let them in for this page view and ask again on the next.
+      }
+      dialog.close();
+    });
+
+    dialog.querySelector('[data-age-no]').addEventListener('click', function () {
+      ask.hidden = true;
+      denied.hidden = false;
+      dialog.setAttribute('aria-labelledby', 'age-gate-denied-heading');
+      denied.querySelector('[data-age-denied-heading]').focus();
+    });
+
+    dialog.querySelector('[data-age-back]').addEventListener('click', function () {
+      denied.hidden = true;
+      ask.hidden = false;
+      dialog.setAttribute('aria-labelledby', 'age-gate-heading');
+      dialog.querySelector('[data-age-yes]').focus();
+    });
+
+    dialog.showModal();
+  })();
+</script>
